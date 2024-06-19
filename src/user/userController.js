@@ -36,3 +36,8 @@ export const signup = asyncErrorHandler(async (req, res, next) => {
   });
   sendToken(user, res, "Registered successfully", 201);
 });
+
+// Get My Profile -> http://localhost:8000/api/v1/user/me
+export const getMyProfile = asyncErrorHandler(async (req, res, next) => {
+  res.send("Hello");
+});
