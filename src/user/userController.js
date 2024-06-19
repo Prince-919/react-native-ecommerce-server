@@ -39,5 +39,9 @@ export const signup = asyncErrorHandler(async (req, res, next) => {
 
 // Get My Profile -> http://localhost:8000/api/v1/user/me
 export const getMyProfile = asyncErrorHandler(async (req, res, next) => {
-  res.send("Hello");
+  const user = await User.findById(req.user._id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
