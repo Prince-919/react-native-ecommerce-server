@@ -1,3 +1,4 @@
+import ErrorHandler from "../utils/error.js";
 import { User } from "./userModel.js";
 
 // Log In -> http://localhost:8000/api/v1/user/login
@@ -8,10 +9,7 @@ export const login = async (req, res, next) => {
   const isMatched = await user.comparePassword(password);
 
   if (!isMatched) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid email or password",
-    });
+    return next(new ErrorHandler("Invalid email or password"));
   }
 
   res.status(200).json({
