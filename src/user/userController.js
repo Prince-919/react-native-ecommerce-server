@@ -1,10 +1,10 @@
+import asyncErrorHandler from "../middlewares/asyncError.js";
 import ErrorHandler from "../utils/error.js";
 import { User } from "./userModel.js";
 
 // Log In -> http://localhost:8000/api/v1/user/login
-export const login = async (req, res, next) => {
+export const login = asyncErrorHandler(async (req, res, next) => {
   const { email, password } = req.body;
-
   const user = await User.findOne({ email }).select("+password");
   const isMatched = await user.comparePassword(password);
 
@@ -16,10 +16,10 @@ export const login = async (req, res, next) => {
     success: true,
     message: `Welcome back, ${user.name}`,
   });
-};
+});
 
 // Sign Up -> http://localhost:8000/api/v1/user/new
-export const signup = async (req, res, next) => {
+export const signup = asyncErrorHandler(async (req, res, next) => {
   const { name, email, password, address, city, country, pinCode } = req.body;
 
   await User.create({ name, email, password, address, city, country, pinCode });
@@ -28,4 +28,4 @@ export const signup = async (req, res, next) => {
     success: true,
     message: "Registered successfully",
   });
-};
+});

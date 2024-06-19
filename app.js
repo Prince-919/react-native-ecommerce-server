@@ -1,6 +1,6 @@
 import express from "express";
 import userRoute from "./src/user/userRoute.js";
-import { globalError } from "./src/middlewares/globalError.js";
+import globalError from "./src/middlewares/globalError.js";
 
 const app = express();
 
