@@ -1,6 +1,6 @@
 import asyncErrorHandler from "../middlewares/asyncError.js";
 import ErrorHandler from "../utils/error.js";
-import { sendToken } from "../utils/features.js";
+import { cookieOptions, sendToken } from "../utils/features.js";
 import { User } from "./userModel.js";
 
 // Log In -> http://localhost:8000/api/v1/user/login
@@ -35,6 +35,20 @@ export const signup = asyncErrorHandler(async (req, res, next) => {
     pinCode,
   });
   sendToken(user, res, "Registered successfully", 201);
+});
+
+// Get My Profile -> http://localhost:8000/api/v1/user/me
+export const logout = asyncErrorHandler(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("token", "", {
+      ...cookieOptions,
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: true,
+      message: "Logged Out Successfully",
+    });
 });
 
 // Get My Profile -> http://localhost:8000/api/v1/user/me

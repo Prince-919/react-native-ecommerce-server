@@ -8,7 +8,6 @@ export const cookieOptions = {
 
 export const sendToken = (user, res, message, statusCode) => {
   const token = user.generateToken();
-
   res
     .status(statusCode)
     .cookie("token", token, {
