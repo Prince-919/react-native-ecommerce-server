@@ -12,9 +12,12 @@ export const login = asyncErrorHandler(async (req, res, next) => {
     return next(new ErrorHandler("Invalid email or password"));
   }
 
+  const token = user.generateToken();
+
   res.status(200).json({
     success: true,
     message: `Welcome back, ${user.name}`,
+    token,
   });
 });
 
