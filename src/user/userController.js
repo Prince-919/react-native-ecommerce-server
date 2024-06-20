@@ -42,9 +42,7 @@ export const signup = asyncErrorHandler(async (req, res, next) => {
 
   if (req.file) {
     const file = getDataUri(req.file);
-    const myCloud = await cloudinary.v2.uploader.upload(file.content, {
-      folder: "REACT_NATIVE_ECOMMERCE",
-    });
+    const myCloud = await cloudinary.v2.uploader.upload(file.content);
     avatar = {
       public_id: myCloud.public_id,
       url: myCloud.secure_url,
@@ -141,9 +139,7 @@ export const updatePicture = asyncErrorHandler(async (req, res, next) => {
 
   await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
-  const myCloud = await cloudinary.v2.uploader.upload(file.content, {
-    folder: "REACT_NATIVE_ECOMMERCE",
-  });
+  const myCloud = await cloudinary.v2.uploader.upload(file.content);
   user.avatar = {
     public_id: myCloud.public_id,
     url: myCloud.secure_url,
