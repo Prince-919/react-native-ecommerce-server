@@ -151,3 +151,37 @@ export const updatePicture = asyncErrorHandler(async (req, res, next) => {
     message: "Avatar updated successfully",
   });
 });
+
+// Forget Password -> http://localhost:8000/api/v1/user/forgetpassword
+export const forgetPassword = asyncErrorHandler(async (req, res, next) => {
+  const { email } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    return next(new ErrorHandler("Incorrect email address", 404));
+  }
+
+  const randomNumber = Math.random() * (999999 - 100000) + 100000;
+  const otp = Math.floor(randomNumber);
+  const otp_expires = 15 * 60 * 1000;
+
+  user.otp = otp;
+  user.otp_expire = new Date(Date.now() + otp_expires);
+
+  await user.save();
+
+  // sendEmail()
+
+  res.status(200).json({
+    success: true,
+    message: `Email sent ot ${user.email}`,
+  });
+});
+// Forget Password -> http://localhost:8000/api/v1/user/forgetpassword
+export const resetPassword = asyncErrorHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
