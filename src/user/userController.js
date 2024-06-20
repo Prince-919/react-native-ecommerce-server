@@ -7,6 +7,13 @@ import { User } from "./userModel.js";
 export const login = asyncErrorHandler(async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    return next(new ErrorHandler("Invalid email or password"));
+  }
+  if (!password) {
+    return next(new ErrorHandler("Password is required", 400));
+  }
+
   const isMatched = await user.comparePassword(password);
 
   if (!isMatched) {
@@ -37,7 +44,7 @@ export const signup = asyncErrorHandler(async (req, res, next) => {
   sendToken(user, res, "Registered successfully", 201);
 });
 
-// Get My Profile -> http://localhost:8000/api/v1/user/me
+// Get My Profile -> http://localhost:8000/api/v1/user/logout
 export const logout = asyncErrorHandler(async (req, res, next) => {
   res
     .status(200)
@@ -57,5 +64,51 @@ export const getMyProfile = asyncErrorHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     user,
+  });
+});
+
+// Get My Profile -> http://localhost:8000/api/v1/user/updateprofile
+export const updateProfile = asyncErrorHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  const { name, email, address, city, country, pinCode } = req.body;
+
+  if (name) user.name = name;
+  if (email) user.email = email;
+  if (address) user.address = address;
+  if (city) user.city = city;
+  if (country) user.country = country;
+  if (pinCode) user.pinCode = pinCode;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Profile updated successfully",
+  });
+});
+
+// Get My Profile -> http://localhost:8000/api/v1/user/changepassword
+export const changePassword = asyncErrorHandler(async (req, res, next) => {
+  const user = await User.findById(req.user._id).select("+password");
+  const { oldPassword, newPassword } = req.body;
+
+  if (!oldPassword || !newPassword) {
+    return next(
+      new ErrorHandler("Please enter new password or old password", 400)
+    );
+  }
+
+  const isMatched = await user.comparePassword(oldPassword);
+
+  if (!isMatched) return next(new ErrorHandler("Incorrect old password", 400));
+
+  user.password = newPassword;
+
+  await user.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Password changed successfully",
   });
 });
