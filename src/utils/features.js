@@ -1,5 +1,7 @@
 import { config } from "../config/config.js";
 
+export const getDataUri = () => {};
+
 export const cookieOptions = {
   secure: config.env === "development" ? false : true,
   httpOnly: config.env === "development" ? false : true,
