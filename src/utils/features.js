@@ -1,6 +1,7 @@
 import { config } from "../config/config.js";
 import DataURIParser from "datauri/parser.js";
 import path from "path";
+import { createTransport } from "nodemailer";
 
 export const getDataUri = (file) => {
   const parser = new DataURIParser();
@@ -26,4 +27,22 @@ export const sendToken = (user, res, message, statusCode) => {
       success: true,
       message: message,
     });
+};
+
+// Send Email
+
+export const sendEmail = async (subject, to, text) => {
+  const transporter = createTransport({
+    host: config.smtp_host,
+    port: config.smtp_port,
+    auth: {
+      user: config.smtp_user,
+      pass: config.smtp_pass,
+    },
+  });
+  await transporter.sendMail({
+    subject,
+    to,
+    text,
+  });
 };
