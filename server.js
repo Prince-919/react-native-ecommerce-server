@@ -1,6 +1,13 @@
 import app from "./app.js";
 import { config } from "./src/config/config.js";
 import connectDB from "./src/config/db.js";
+import cloudinary from "cloudinary";
+
+cloudinary.v2.config({
+  cloud_name: config.cloud_name,
+  api_key: config.cloud_key,
+  api_secret: config.cloud_secret,
+});
 
 const startServer = async () => {
   await connectDB();
