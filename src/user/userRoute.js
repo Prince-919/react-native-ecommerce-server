@@ -19,6 +19,6 @@ router.get("/me", isAuthenticated, getMyProfile);
 router.get("/logout", isAuthenticated, logout);
 router.put("/updateprofile", isAuthenticated, updateProfile);
 router.put("/changepassword", isAuthenticated, changePassword);
-router.put("/updatepicture", isAuthenticated, updatePicture);
+router.put("/updatepicture", isAuthenticated, singleUpload, updatePicture);
 
 export default router;

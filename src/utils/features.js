@@ -1,6 +1,12 @@
 import { config } from "../config/config.js";
+import DataURIParser from "datauri/parser.js";
+import path from "path";
 
-export const getDataUri = () => {};
+export const getDataUri = (file) => {
+  const parser = new DataURIParser();
+  const extName = path.extname(file.originalname).toString();
+  return parser.format(extName, file.buffer);
+};
 
 export const cookieOptions = {
   secure: config.env === "development" ? false : true,
