@@ -1,4 +1,3 @@
-import { response } from "express";
 import ErrorHandler from "../utils/error.js";
 import asyncErrorHandler from "./../middlewares/asyncError.js";
 import { Category } from "./categoryModel.js";
