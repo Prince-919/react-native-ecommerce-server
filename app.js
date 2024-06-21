@@ -6,8 +6,18 @@ import productRoute from "./src/product/productRoute.js";
 import orderRoute from "./src/order/orderRoute.js";
 import globalError from "./src/middlewares/globalError.js";
 import { config } from "./src/config/config.js";
+import { Product } from "./src/product/productModel.js";
 
 const app = express();
+
+app.use("/", async (req, res) => {
+  const products = await Product.find({});
+  res.status(200).json({
+    success: true,
+    message: "Api Working Successfully🚀🚀🚀",
+    products,
+  });
+});
 
 // Middlewares
 app.use(express.json());
