@@ -10,15 +10,6 @@ import { Product } from "./src/product/productModel.js";
 
 const app = express();
 
-app.use("/", async (req, res) => {
-  const products = await Product.find({});
-  res.status(200).json({
-    success: true,
-    message: "Api Working Successfully🚀🚀🚀",
-    products,
-  });
-});
-
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
