@@ -2,6 +2,9 @@ import app from "./app.js";
 import { config } from "./src/config/config.js";
 import connectDB from "./src/config/db.js";
 import cloudinary from "cloudinary";
+import Stripe from "stripe";
+
+export const stripe = new Stripe(config.stripe_secret);
 
 cloudinary.v2.config({
   cloud_name: config.cloud_name,

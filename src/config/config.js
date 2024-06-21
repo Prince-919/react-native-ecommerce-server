@@ -13,6 +13,9 @@ const _config = {
   smtp_port: process.env.SMTP_PORT,
   smtp_user: process.env.SMTP_USER,
   smtp_pass: process.env.SMTP_PASS,
+  stripe_key: process.env.STRIPE_API_KEY,
+  stripe_secret: process.env.STRIPE_API_SECRET,
+  frontendUrl: process.env.FRONTEND_URL,
 };
 
 export const config = Object.freeze(_config);

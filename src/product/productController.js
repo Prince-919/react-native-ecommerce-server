@@ -24,9 +24,14 @@ export const getAllProducts = asyncErrorHandler(async (req, res, next) => {
 // Get Admin Product -> http://localhost:8000/api/v1/product/admin
 export const getAdminProducts = asyncErrorHandler(async (req, res, next) => {
   const products = await Product.find({}).populate("category");
+
+  const outOfStock = products.filter((item) => item.stock === 0);
+
   res.status(200).json({
     success: true,
     products,
+    outOfStock: outOfStock.length,
+    inStock: products.length - outOfStock.length,
   });
 });
 
