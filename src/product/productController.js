@@ -12,6 +12,14 @@ export const getAllProducts = asyncErrorHandler(async (req, res, next) => {
     products,
   });
 });
+// Get Admin Product -> http://localhost:8000/api/v1/product/admin
+export const getAdminProducts = asyncErrorHandler(async (req, res, next) => {
+  const products = await Product.find({});
+  res.status(200).json({
+    success: true,
+    products,
+  });
+});
 
 // Get Single Product -> http://localhost:8000/api/v1/product/single/123
 export const getProductDetails = asyncErrorHandler(async (req, res, next) => {
