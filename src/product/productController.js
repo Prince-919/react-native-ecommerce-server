@@ -6,7 +6,16 @@ import cloudinary from "cloudinary";
 
 // Get All Product -> http://localhost:8000/api/v1/product/all
 export const getAllProducts = asyncErrorHandler(async (req, res, next) => {
-  const products = await Product.find({});
+  // Search Or Filter
+  const { keyword, category } = req.query;
+
+  const products = await Product.find({
+    name: {
+      $regex: keyword ? keyword : "",
+      $options: "i",
+    },
+    category: category ? category : undefined,
+  });
   res.status(200).json({
     success: true,
     products,
@@ -14,7 +23,7 @@ export const getAllProducts = asyncErrorHandler(async (req, res, next) => {
 });
 // Get Admin Product -> http://localhost:8000/api/v1/product/admin
 export const getAdminProducts = asyncErrorHandler(async (req, res, next) => {
-  const products = await Product.find({});
+  const products = await Product.find({}).populate("category");
   res.status(200).json({
     success: true,
     products,
@@ -23,7 +32,7 @@ export const getAdminProducts = asyncErrorHandler(async (req, res, next) => {
 
 // Get Single Product -> http://localhost:8000/api/v1/product/single/123
 export const getProductDetails = asyncErrorHandler(async (req, res, next) => {
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findById(req.params.id).populate("category");
   if (!product) return next(new ErrorHandler("Product not found", 404));
   res.status(200).json({
     success: true,
